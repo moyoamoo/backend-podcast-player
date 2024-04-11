@@ -15,7 +15,8 @@ function connectMySQL(query) {
     connection.query(query, (error, results) => {
       if (error) {
         console.log(error);
-        reject();
+        reject(error);
+        return;
       }
 
       resolve(results);

@@ -15,7 +15,7 @@ router.post("/", (req, res) => {
   });
 
   if (!user) {
-    res.send({ status: 0, reason: "User/password combo was not found!" });
+    res.send({ status: 0, reason: "user/password combo was not found" });
     return;
   }
 

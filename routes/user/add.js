@@ -18,7 +18,6 @@ router.post("/", async (req, res) => {
 
   //create token
   const token = getRandom();
-
   //insert user, password,, token  into the DB, catch error
   try {
     const result = await connectMySQL(addUser(email, password));
@@ -27,7 +26,6 @@ router.post("/", async (req, res) => {
 
     res.send({ status: 1, token });
   } catch (e) {
-    console.log(e);
     res.send({ status: 1, reason: "Duplicate user" });
   }
 });

@@ -1,13 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const sha256 = require("sha256");
-const { checkToken } = require("../../middleware");
+const { checkUser } = require("../../middleware");
+const connectMySQL = require("../../mysql/driver");
+const { deleteToken } = require("../../mysql/queries");
 
-router.delete("/", checkToken, (req, res) => {
-  req.authedUser.token.splice(
-    req.authedUser.token.indexOf(req.headers.token, 1)
-  );
-
+router.delete("/", checkUser, async (req, res) => {
+  await connectMySQL(deleteToken(req.headers.token));
   res.send({ status: 1 });
 });
 

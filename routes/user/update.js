@@ -2,9 +2,11 @@ const express = require("express");
 const router = express.Router();
 const sha256 = require("sha256");
 const { salt } = require("../../secrets");
-const { checkToken } = require("../../middleware");
+const { checkUser } = require("../../middleware");
+const connectMySQL = require("../../mysql/driver");
+const { updateUser } = require("../../mysql/queries");
 
-router.patch("/", checkToken, (req, res) => {
+router.patch("/", checkUser, async (req, res) => {
   const { email, password } = req.body;
 
   if (!(email || password)) {
@@ -12,10 +14,12 @@ router.patch("/", checkToken, (req, res) => {
   }
 
   if (email) {
-    req.authedUser.email = email;
+    await connectMySQL(updateUser("email", email, req.headers.token));
   }
   if (password) {
-    req.authedUser.password = sha256(password + salt);
+    await connectMySQL(
+      updateUser("password", sha256(password) + salt, req.headers.token)
+    );
   }
 
   res.send({ status: 1 });

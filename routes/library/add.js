@@ -1,9 +1,10 @@
 const express = require("express");
-const { checkToken } = require("../../middleware");
+const { checkUser } = require("../../middleware");
+const connectMySQL = require("../../mysql/driver");
+const { addToLibrary } = require("../../mysql/queries");
 const router = express.Router();
 
-router.post("/", checkToken, (req, res) => {
-  console.log(req.body);
+router.post("/", checkUser, async (req, res) => {
   let { uuid } = req.body;
 
   if (typeof uuid != "string") {
@@ -13,21 +14,15 @@ router.post("/", checkToken, (req, res) => {
 
   if (uuid.length < 32) {
     res.send({ status: 0, reason: "invalid length" });
-  }
-
-  const duplicate = req.authedUser.library.find((podcast) => {
-    return podcast === uuid;
-  });
-
-  if (duplicate) {
-    res.send({ status: 0, reason: "duplicate podcast" });
     return;
   }
 
-  req.authedUser.library
-    ? req.authedUser.library.push(uuid)
-    : (req.authedUser.library = [uuid]);
-  res.send({ status: 1 });
+  try {
+    await connectMySQL(addToLibrary(req.authedUserID, uuid));
+    res.send({ status: 1 });
+  } catch (e) {
+    res.send({ status: 1, reason: "duplicate podcast" });
+  }
 });
 
 module.exports = router;

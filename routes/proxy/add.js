@@ -4,7 +4,6 @@ const axios = require("axios");
 const { apiKey, endPoint, userID } = require("../../config");
 
 router.get("/", async (req, res) => {
-  console.log(req.headers);
   const { uuid, order, page } = req.headers;
   try {
     const { data } = await axios.post(

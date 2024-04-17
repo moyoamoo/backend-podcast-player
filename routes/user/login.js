@@ -4,6 +4,8 @@ const sha256 = require("sha256");
 const { salt } = require("../../secrets.js");
 const { getRandom } = require("../../utils.js");
 const connectMySQL = require("../../mysql/driver.js");
+const { addToken, findUser } = require("../../mysql/queries.js");
+const { userID } = require("../../config.js");
 
 router.post("/", async (req, res) => {
   let { email, password } = req.body;
@@ -12,17 +14,13 @@ router.post("/", async (req, res) => {
   password = sha256(password + salt);
 
   //search for user
-  const results = await connectMySQL(`SELECT * FROM users
-                  WHERE email LIKE "${email}" AND password LIKE "${password}";`);
+  const results = await connectMySQL(findUser(email, password));
 
   //if there are more than one users in array, generate token, store token
   if (results.length > 0) {
     const token = getRandom();
 
-    await connectMySQL(`INSERT INTO sessions
-                          (user_id, token)
-                            VALUES
-                              ("${results[0].id}", "${token}");`);
+    await connectMySQL(addToken(results[0].id, token));
     res.send({ status: 1, token });
     return;
   }

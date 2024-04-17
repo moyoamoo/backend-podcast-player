@@ -1,24 +1,28 @@
 const express = require("express");
 const { checkToken } = require("../../middleware");
+const { deleteFromLibrary } = require("../../mysql/queries");
 const router = express.Router();
 
-router.delete("/:uuid", checkToken, (req, res) => {
-  let { uuid } = req.params;
+router.delete("/", checkToken, async (req, res) => {
+  let { uuid } = req.headers;
+  // console.log(uuid);
+  // if (typeof uuid != "string") {
+  //   res.send({ status: 0, reason: "invalid uuid" });
+  //   return;
+  // }
 
-  if (typeof uuid != "string") {
-    res.send({ status: 0, reason: "invalid uuid" });
-    return;
-  }
+  // if (uuid.length < 32) {
+  //   res.send({ status: 0, reason: "invalid length" });
+  //   return;
+  // }
 
-  const indexOf = authedUser.library.indexOf(uuid);
-
-  if (!uuid) {
+  try {
+    await connectMySQL(deleteFromLibrary(req.authedUserID, uuid));
+    res.send({ status: 1 });
+  } catch (e) {
+    console.log(e);
     res.send({ status: 0, reason: "no podcast found" });
-    return;
   }
-
-  req.authedUser.library.splice(indexOf, 1);
-  res.send({ status: 1 });
 });
 
 module.exports = router;

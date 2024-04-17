@@ -1,20 +1,15 @@
-function checkToken(req, res, next) {
-  const user = req.users.find((user) => {
-    console.log(user.token);
+const connectMySQL = require("./mysql/driver");
+const { checkToken } = require("./mysql/queries");
 
-    return user.token.find((token) => {
-      console.log(token.token, req.headers.token);
-      return token.token === Number(req.headers.token);
-    });
-  });
+async function checkUser(req, res, next) {
+  const results = await connectMySQL(checkToken(req.headers.token));
 
-  if (user) {
-    req.authedUser = user;
+  if (results.length) {
+    req.authedUserID = results[0].id;
     next();
     return;
   }
-
-  res.send({ status: 0, reason: "Bad token" });
+  res.send({ status: 0, reason: "bad token" });
 }
 
-module.exports = { checkToken };
+module.exports = { checkUser, checkToken };

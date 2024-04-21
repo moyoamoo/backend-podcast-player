@@ -9,9 +9,10 @@ router.get("/", async (req, res) => {
   try {
     //search for term in cache
     const cache = await connectMySQL(
-      `SELECT response FROM cache where search_term LIKE "${searchterm}";`
+      `SELECT response FROM search_cache where search_term LIKE "${searchterm}";`
     );
 
+    console.log(searchterm, page, order)
     //if in cache send
     if (cache.length) {
       const str = Buffer.from(cache[0].response, "base64");
@@ -55,12 +56,14 @@ router.get("/", async (req, res) => {
     const b64 = Buffer.from(JSON.stringify(data), "utf8");
 
     //send to cache table
-    await connectMySQL(`INSERT INTO cache
+    await connectMySQL(`INSERT INTO search_cache
                           (search_term, response)
                               VALUES
                                 ("${searchterm}", "${b64.toString(
       "base64"
     )}");`);
+
+    console.log(data)
     res.send(data);
   } catch (e) {
     res.send(e);

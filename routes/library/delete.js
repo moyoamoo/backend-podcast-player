@@ -1,9 +1,10 @@
 const express = require("express");
-const { checkToken } = require("../../middleware");
+const { checkUser } = require("../../middleware");
 const { deleteFromLibrary } = require("../../mysql/queries");
+const connectMySQL = require("../../mysql/driver");
 const router = express.Router();
 
-router.delete("/", checkToken, async (req, res) => {
+router.delete("/", checkUser, async (req, res) => {
   let { uuid } = req.headers;
   // console.log(uuid);
   // if (typeof uuid != "string") {
@@ -15,6 +16,8 @@ router.delete("/", checkToken, async (req, res) => {
   //   res.send({ status: 0, reason: "invalid length" });
   //   return;
   // }
+  console.log("i ran");
+  console.log(deleteFromLibrary(req.authedUserID, uuid));
 
   try {
     await connectMySQL(deleteFromLibrary(req.authedUserID, uuid));

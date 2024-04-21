@@ -1,9 +1,4 @@
-function getUser(users, email, password) {
-  return users.find((user) => {
-    return user.email === email && user.password === password;
-  });
-}
-
+//create token
 function getRandom(len = 115) {
   let uniqueId = "";
   let chars =
@@ -18,6 +13,11 @@ function getRandom(len = 115) {
   }
 
   return (uniqueId += Date.now());
+}
+
+//convert to base64
+function toBase64(data) {
+  return Buffer.from(JSON.stringify(data), "utf8");
 }
 
 function rankList(arr) {
@@ -37,4 +37,4 @@ function rankList(arr) {
   return sortedObjTotal;
 }
 
-module.exports = { getRandom, getUser, rankList };
+module.exports = { getRandom, rankList, toBase64 };

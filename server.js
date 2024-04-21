@@ -14,12 +14,16 @@ app.use("/search", require("./routes/proxy/get"));
 //add episodes
 app.use("/episodes", require("./routes/proxy/add"));
 
+//add search term
+app.use("/search_term/add", require("./routes/search/add"));
+
 //genre routes
 app.use("/genre/add", require("./routes/genres/add"));
 app.use("/genres/get", require("./routes/genres/get"));
 
 // listened podcasts routes
 app.use("/listened/add", require("./routes/listened/add"));
+app.use("/listened/get", require("./routes/listened/get"));
 
 //library routes
 app.use("/library/add", require("./routes/library/add"));

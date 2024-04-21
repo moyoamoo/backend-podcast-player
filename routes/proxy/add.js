@@ -2,10 +2,24 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const { apiKey, endPoint, userID } = require("../../config");
+const connectMySQL = require("../../mysql/driver");
 
 router.get("/", async (req, res) => {
   const { uuid, order, page } = req.headers;
+
   try {
+    //   const cache = await connectMySQL(
+    //     `SELECT response FROM episode_cache where search_term LIKE "${uuid}";`
+    //   );
+
+    //   console.log(cache)
+
+    //   if (cache.length) {
+    //     const str = Buffer.from(cache[0].response, "base64");
+    //     res.send(str.toString("utf8"));
+    //     return;
+    //   }
+
     const { data } = await axios.post(
       endPoint,
       {
@@ -34,7 +48,16 @@ router.get("/", async (req, res) => {
         },
       }
     );
+
     res.send(data);
+    //change to b64
+    // const b64 = Buffer.from(JSON.stringify(data), "utf8");
+
+    //send to cache table
+    // await connectMySQL(`INSERT INTO episode_cache
+    //                        (uuid, response)
+    //                            VALUES
+    //                              ("${uuid}", "${b64.toString("base64")}");`);
   } catch (e) {
     res.send(e);
   }

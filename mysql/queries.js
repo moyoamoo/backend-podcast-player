@@ -5,11 +5,10 @@ function addUser(email, password) {
                     ("${email}", "${password}");`;
 }
 
-
-function findUser(email, password){
-    return `SELECT * FROM users
+function findUser(email, password) {
+  return `SELECT * FROM users
                 WHERE email LIKE "${email}" 
-                    AND password LIKE "${password}";`
+                    AND password LIKE "${password}";`;
 }
 function addToken(userID, token) {
   return `INSERT INTO sessions
@@ -18,10 +17,10 @@ function addToken(userID, token) {
                         ("${userID}", "${token}");`;
 }
 
-function getLibrary(userID){
-    return `SELECT *
+function getLibrary(userID) {
+  return `SELECT *
                 FROM library
-                    where library.user_id LIKE ${userID};`
+                    where library.user_id LIKE ${userID};`;
 }
 
 function addToLibrary(userID, uuid) {
@@ -32,15 +31,16 @@ function addToLibrary(userID, uuid) {
     `;
 }
 
-function addToken(userID, token){
-    return `INSERT INTO sessions
+function addToken(userID, token) {
+  return `INSERT INTO sessions
                 (user_id, token)
                      VALUES
-                        ("${userID}", "${token}");`}
+                        ("${userID}", "${token}");`;
+}
 
 function deleteFromLibrary(userID, uuid) {
   return `DELETE FROM library
-                WHERE library.user_id LIKE "${userID} AND uuid LIKE "${uuid}";`;
+                WHERE library.user_id LIKE ${userID} AND uuid LIKE "${uuid}";`;
 }
 
 function deleteToken(token) {
@@ -75,6 +75,14 @@ function getUser(token) {
                     WHERE token LIKE "${token}";`;
 }
 
+function addToCache(searchTerm, response) {
+  return `INSERT INTO cache
+            (search_term, response)
+               VALUES
+                ("${searchTerm}", "${response.toString("base64")}");`;
+}
+
+
 module.exports = {
   addUser,
   addToken,
@@ -83,7 +91,9 @@ module.exports = {
   updateUser,
   checkToken,
   getUser,
-  addToLibrary, 
+  addToLibrary,
   deleteFromLibrary,
-  getLibrary, findUser
+  getLibrary,
+  findUser,
+  addToCache
 };

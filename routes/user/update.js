@@ -14,11 +14,11 @@ router.patch("/", checkUser, async (req, res) => {
   }
 
   if (email) {
-    await connectMySQL(updateUser("email", email, req.headers.token));
+    await connectMySQL(updateUser, ["email", email, req.headers.token]);
   }
   if (password) {
     await connectMySQL(
-      updateUser("password", sha256(password) + salt, req.headers.token)
+      updateUser("password", [sha256(password) + salt, req.headers.token])
     );
   }
 

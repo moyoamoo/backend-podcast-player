@@ -3,7 +3,7 @@ const { checkToken } = require("./mysql/queries");
 
 async function checkUser(req, res, next) {
  
-  const results = await connectMySQL(checkToken(req.headers.token));
+  const results = await connectMySQL(checkToken, [req.headers.token]);
 
   if (results.length) {
     req.authedUserID = results[0].id;
@@ -19,4 +19,4 @@ async function checkUser(req, res, next) {
   res.send({ status: 0, reason: "bad token" });
 }
 
-module.exports = { checkUser, checkToken };
+module.exports = { checkUser };

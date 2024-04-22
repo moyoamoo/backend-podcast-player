@@ -1,87 +1,92 @@
-function addUser(email, password) {
-  return `INSERT INTO users
-            (email, password)
-                 VALUES
-                    ("${email}", "${password}");`;
-}
-
-function findUser(email, password) {
-  return `SELECT * FROM users
-                WHERE email LIKE "${email}" 
-                    AND password LIKE "${password}";`;
-}
-function addToken(userID, token) {
-  return `INSERT INTO sessions
-                (user_id, token)
+const addUser = `INSERT INTO users
+                  (email, password)
                     VALUES
-                        ("${userID}", "${token}");`;
-}
+                      (?, ?);`;
 
-function getLibrary(userID) {
-  return `SELECT *
-                FROM library
-                    where library.user_id LIKE ${userID};`;
-}
+const findUser = `SELECT * FROM users
+                    WHERE email LIKE ?
+                        AND password LIKE ?`;
 
-function addToLibrary(userID, uuid) {
-  return `INSERT INTO library
-                (user_id, uuid)
-                    VALUES
-                        ("${userID}", "${uuid}");
-    `;
-}
+const getLibrary = `SELECT *
+                      FROM library
+                        where library.user_id LIKE ?;`;
 
-function addToken(userID, token) {
-  return `INSERT INTO sessions
-                (user_id, token)
-                     VALUES
-                        ("${userID}", "${token}");`;
-}
+const addToLibrary = `INSERT INTO library
+                      (user_id, uuid)
+                        VALUES
+                        (?, ?); `;
 
-function deleteFromLibrary(userID, uuid) {
-  return `DELETE FROM library
-                WHERE library.user_id LIKE ${userID} AND uuid LIKE "${uuid}";`;
-}
+const addToken = `INSERT INTO sessions
+                    (user_id, token)
+                      VALUES
+                        (?, ?);`;
 
-function deleteToken(token) {
-  return `DELETE FROM sessions
-                WHERE token LIKE "${token}";`;
-}
+const deleteFromLibrary = `DELETE FROM library
+                            WHERE library.user_id LIKE ? 
+                              AND uuid LIKE ?;`;
 
-function deleteUser(token) {
-  return `DELETE users, sessions FROM users
-            JOIN sessions ON users.id = sessions.user_id
-                WHERE token LIKE "${token}";`;
-}
+const deleteToken = `DELETE FROM sessions
+                      WHERE token LIKE ?;`;
 
-function updateUser(key, value, token) {
-  return `UPDATE users
-            JOIN sessions ON users.id = sessions.user_id
-                SET ${key} = "${value}"
-                   WHERE sessions.token LIKE "${token}";`;
-}
+const deleteUser = `DELETE users, sessions FROM users
+                      JOIN sessions ON users.id = sessions.user_id
+                        WHERE token LIKE ?;`;
 
-function checkToken(token) {
-  return `SELECT *
-            FROM users
-                JOIN sessions ON users.id = sessions.user_id
-                    WHERE token LIKE "${token}";`;
-}
+const updateUser = `UPDATE users
+                      JOIN sessions ON users.id = sessions.user_id
+                        SET ? = ?
+                          WHERE sessions.token LIKE ?;`;
 
-function getUser(token) {
-  return `SELECT users.id
-            FROM users
-                JOIN sessions ON users.id = sessions.user_id
-                    WHERE token LIKE "${token}";`;
-}
+const checkToken = `SELECT users.id
+                      FROM users
+                        JOIN sessions ON users.id = sessions.user_id
+                          WHERE token LIKE ?;`;
 
-function addToCache(searchTerm, response) {
-  return `INSERT INTO cache
-            (search_term, response)
-               VALUES
-                ("${searchTerm}", "${response.toString("base64")}");`;
-}
+const getUser = `SELECT *
+                  FROM users
+                    JOIN sessions ON users.id = sessions.user_id
+                      WHERE token LIKE "?;`;
 
+// function addToCache(searchTerm, response) {
+//   return `INSERT INTO cache
+//             (search_term, response)
+//                VALUES
+//                 ("${searchTerm}", "${response.toString("base64")}");`;
+// }
+
+const getPlaybackData = `SELECT position
+                          FROM playback_log
+                            WHERE uuid LIKE ?;`;
+
+const addAuthedUserListenData = `INSERT INTO playback_log
+                                  (uuid, user_id, position, duration)
+                                    VALUES
+                                      (?, ?, ?, ?);`;
+
+const addGuestUserListenData = `INSERT INTO playback_log
+                                  (uuid, temp_user_id, position, duration)
+                                    VALUES
+                                      (?, ?, ?, ?);`;
+
+const getEpisodeCache = `SELECT response FROM episode_cache 
+                                      WHERE uuid LIKE ?
+                                          AND page LIKE ?
+                                              AND sort_order LIKE ?;`;
+
+const addEpisodeCache = `INSERT INTO episode_cache
+                                      (uuid, response, page, sort_order)
+                                          VALUES
+                                              (?, ?, ?, ?);`;
+
+const getSearchCache = `SELECT response FROM search_cache 
+                          WHERE search_term LIKE ?
+                            AND page LIKE ?
+                              AND sort_order LIKE ?;`;
+
+const addSearchCache = `INSERT INTO search_cache
+                          (search_term, response, page, sort_order)
+                              VALUES
+                                (?, ?, ?, ?);`;
 
 module.exports = {
   addUser,
@@ -95,5 +100,12 @@ module.exports = {
   deleteFromLibrary,
   getLibrary,
   findUser,
-  addToCache
+  getEpisodeCache,
+  addEpisodeCache,
+  getSearchCache,
+  addSearchCache,
+  // addToCache,
+  getPlaybackData,
+  addAuthedUserListenData,
+  addGuestUserListenData,
 };

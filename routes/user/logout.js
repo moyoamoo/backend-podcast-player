@@ -5,7 +5,7 @@ const connectMySQL = require("../../mysql/driver");
 const { deleteToken } = require("../../mysql/queries");
 
 router.delete("/", checkUser, async (req, res) => {
-  await connectMySQL(deleteToken(req.headers.token));
+  await connectMySQL(deleteToken, [req.headers.token]);
   res.send({ status: 1 });
 });
 

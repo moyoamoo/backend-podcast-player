@@ -1,6 +1,7 @@
 const express = require("express");
 const connectMySQL = require("../../mysql/driver");
 const { rankList } = require("../../utils");
+const { getPlaybackData } = require("../../mysql/queries");
 
 const router = express.Router();
 
@@ -11,10 +12,9 @@ router.get("/", async (req, res) => {
     res.send({ status: 0, reason: "invalid uuid" });
     return;
   }
+
   try {
-    const results = await connectMySQL(`SELECT position
-                                                FROM playback_log
-                                                    WHERE uuid LIKE "${uuid}";`);
+    const results = await connectMySQL(getPlaybackData, [uuid]);
 
     if (!results.length) {
       res.send({ status: 1, reason: "no listen data" });

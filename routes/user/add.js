@@ -20,9 +20,9 @@ router.post("/", async (req, res) => {
   const token = getRandom();
   //insert user, password,, token  into the DB, catch error
   try {
-    const result = await connectMySQL(addUser(email, password));
+    const result = await connectMySQL(addUser, [email, password]);
 
-    await connectMySQL(addToken(result.insertId, token));
+    await connectMySQL(addToken, [result.insertId, token]);
 
     res.send({ status: 1, token });
   } catch (e) {

@@ -8,19 +8,21 @@ const { addToken, findUser } = require("../../mysql/queries.js");
 const { userID } = require("../../config.js");
 
 router.post("/", async (req, res) => {
+  console.log("i ran")
   let { email, password } = req.body;
 
   //hash password
   password = sha256(password + salt);
 
+
   //search for user
-  const results = await connectMySQL(findUser(email, password));
+  const results = await connectMySQL(findUser, [email, password]);
 
   //if there are more than one users in array, generate token, store token
   if (results.length > 0) {
     const token = getRandom();
 
-    await connectMySQL(addToken(results[0].id, token));
+    await connectMySQL(addToken, [results[0].id, token]);
     res.send({ status: 1, token });
     return;
   }

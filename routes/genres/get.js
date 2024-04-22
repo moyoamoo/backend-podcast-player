@@ -1,8 +1,8 @@
 const express = require("express");
-const { checkToken } = require("../../middleware");
+const { checkUser } = require("../../middleware");
 const router = express.Router();
 
-router.get("/", checkToken, (req, res) => {
+router.get("/", checkUser, (req, res) => {
   const favGenres = rankList(req.authedUser.library);
 
   res.send({ status: 1, favGenres: favGenres });

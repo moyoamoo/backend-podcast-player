@@ -25,12 +25,12 @@ router.post("/", checkUser, async (req, res) => {
       await connectMySQL(`INSERT INTO playback_log
                           (uuid, user_id, position, duration)
                             VALUES
-                              ("${uuid}", ${req.authedUserID}, ${playbackPosition}, ${playbackDuration});`);
+                              ("${uuid}", ${req.authedUserID}, ${playbackPosition}, ${playbackDuration});`, [uuid, req.authedUserID, playbackPosition, playbackDuration]);
     } else {
       await connectMySQL(`INSERT INTO playback_log
                           (uuid, temp_user_id, position, duration)
                             VALUES
-                              ("${uuid}", "${req.tempUserId}", ${playbackPosition}, ${playbackDuration});`);
+                              ("${uuid}", "${req.tempUserId}", ${playbackPosition}, ${playbackDuration});`[uuid, req.tempUserId,  playbackPosition, playbackDuration]);
     }
     res.send({ status: 1 });
   } catch (e) {

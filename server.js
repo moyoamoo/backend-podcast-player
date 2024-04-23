@@ -14,12 +14,12 @@ app.use("/search", require("./routes/proxy/get"));
 //add episodes
 app.use("/episodes", require("./routes/proxy/add"));
 
+//get listened for user
+app.use("/plays/get", require("./routes/plays/get"));
 
-//get listened for user 
-app.use("/plays/get", require("./routes/plays/get"))
-//add search term
-
+//user search terms routes
 app.use("/search_term/add", require("./routes/search/add"));
+app.use("/search_term/get", require("./routes/search/get"));
 
 //genre routes
 app.use("/genres/add", require("./routes/genres/add"));

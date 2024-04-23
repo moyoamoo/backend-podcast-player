@@ -20,7 +20,7 @@ function toBase64(data) {
   return Buffer.from(JSON.stringify(data), "utf8");
 }
 
-//format genre array 
+//format genre array
 function formatGenres(arr) {
   let genre;
   let formattedGenres = [];
@@ -48,4 +48,13 @@ function rankList(arr) {
   return sortedObjTotal;
 }
 
-module.exports = { getRandom, rankList, toBase64, formatGenres};
+function removeDuplicates(arr) {
+  return arr.filter((value, index) => arr.indexOf(value) === index);
+}
+module.exports = {
+  getRandom,
+  rankList,
+  toBase64,
+  formatGenres,
+  removeDuplicates,
+};

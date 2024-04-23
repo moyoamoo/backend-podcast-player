@@ -14,11 +14,15 @@ app.use("/search", require("./routes/proxy/get"));
 //add episodes
 app.use("/episodes", require("./routes/proxy/add"));
 
+
+//get listened for user 
+app.use("/plays/get", require("./routes/plays/get"))
 //add search term
+
 app.use("/search_term/add", require("./routes/search/add"));
 
 //genre routes
-app.use("/genre/add", require("./routes/genres/add"));
+app.use("/genres/add", require("./routes/genres/add"));
 app.use("/genres/get", require("./routes/genres/get"));
 
 // listened podcasts routes

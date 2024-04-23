@@ -56,7 +56,7 @@ const getUser = `SELECT *
 
 const getPlaybackData = `SELECT position
                           FROM playback_log
-                            WHERE uuid LIKE ?;`;
+                            WHERE episode_uuid LIKE ?;`;
 
 const addAuthedUserListenData = `INSERT INTO playback_log
                                   (uuid, user_id, position, duration)
@@ -88,6 +88,14 @@ const addSearchCache = `INSERT INTO search_cache
                               VALUES
                                 (?, ?, ?, ?);`;
 
+const addToGenres = `INSERT INTO genres
+                      (user_id, genre)
+                        VALUES 
+                          (?, ?); `;
+
+const getUserGenres = `SELECT genre FROM genres
+                          WHERE user_id like ?;`;
+
 module.exports = {
   addUser,
   addToken,
@@ -108,4 +116,6 @@ module.exports = {
   getPlaybackData,
   addAuthedUserListenData,
   addGuestUserListenData,
+  addToGenres,
+  getUserGenres,
 };

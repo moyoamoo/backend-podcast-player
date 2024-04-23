@@ -20,6 +20,17 @@ function toBase64(data) {
   return Buffer.from(JSON.stringify(data), "utf8");
 }
 
+//format genre array 
+function formatGenres(arr) {
+  let genre;
+  let formattedGenres = [];
+  for (let i = 0; i < arr.length; i++) {
+    genre = arr[i].split("PODCASTSERIES_");
+    formattedGenres.push(genre[1].replaceAll("_", " ").toLowerCase());
+  }
+  return formattedGenres;
+}
+
 function rankList(arr) {
   let objTotal = {};
   arr.forEach((item) => {
@@ -37,4 +48,4 @@ function rankList(arr) {
   return sortedObjTotal;
 }
 
-module.exports = { getRandom, rankList, toBase64 };
+module.exports = { getRandom, rankList, toBase64, formatGenres};

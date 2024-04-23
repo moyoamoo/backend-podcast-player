@@ -13,15 +13,15 @@ router.get("/", async (req, res) => {
 
   try {
     //search for term in cache
-    const cache = await connectMySQL(getSearchCache, [searchterm, page, order]);
+    // const cache = await connectMySQL(getSearchCache, [searchterm, page, order]);
 
     //if in cache send
-    if (cache.length) {
-      const str = Buffer.from(cache[0].response, "base64");
-      res.send(str.toString("utf8"));
-      return;
-    }
-    console.log(cache);
+    // if (cache.length) {
+    //   const str = Buffer.from(cache[0].response, "base64");
+    //   res.send(str.toString("utf8"));
+    //   return;
+    // }
+    // console.log(cache);
     const { data } = await axios.post(
       endPoint,
       {
@@ -55,15 +55,15 @@ router.get("/", async (req, res) => {
     );
 
     //change to b64
-    const b64 = Buffer.from(JSON.stringify(data), "utf8");
+    // const b64 = Buffer.from(JSON.stringify(data), "utf8");
 
     //send to cache table
-    await connectMySQL(addSearchCache, [
-      searchterm,
-      b64.toString("base64"),
-      page,
-      order,
-    ]);
+    // await connectMySQL(addSearchCache, [
+    //   searchterm,
+    //   b64.toString("base64"),
+    //   page,
+    //   order,
+    // ]);
 
     console.log(data, "data from api");
     res.send(data);

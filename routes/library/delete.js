@@ -17,10 +17,10 @@ router.delete("/", checkUser, async (req, res) => {
   //   return;
   // }
   console.log("i ran");
-  console.log(deleteFromLibrary(req.authedUserID, uuid));
+  console.log(deleteFromLibrary, [req.authedUserID, uuid]);
 
   try {
-    await connectMySQL(deleteFromLibrary(req.authedUserID, uuid));
+    await connectMySQL(deleteFromLibrary, [req.authedUserID, uuid]);
     res.send({ status: 1 });
   } catch (e) {
     console.log(e);

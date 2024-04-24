@@ -18,10 +18,10 @@ router.post("/", checkUser, async (req, res) => {
   }
 
   try {
-    await connectMySQL(addToLibrary(req.authedUserID, uuid));
+    await connectMySQL(addToLibrary, [req.authedUserID, uuid]);
     res.send({ status: 1 });
   } catch (e) {
-    res.send({ status: 1, reason: "duplicate podcast" });
+    res.send({ status: 0, reason: "duplicate entry" });
   }
 });
 

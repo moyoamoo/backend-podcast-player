@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/", checkUser, async (req, res) => {
   try {
     let library = [];
-    const results = await connectMySQL(getLibrary(req.authedUserID));
+    const results = await connectMySQL(getLibrary, [req.authedUserID]);
     results.forEach((result) => {
       library.push(result.uuid);
     });

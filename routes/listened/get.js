@@ -6,12 +6,7 @@ const { getPlaybackData } = require("../../mysql/queries");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const { episodeUuid} = req.headers;
-
-  // if (!uuid || typeof uuid != "string" || uuid.length <= 32) {
-  //   res.send({ status: 0, reason: "invalid uuid" });
-  //   return;
-  // }
+  const { episodeUuid } = req.headers;
 
   try {
     const results = await connectMySQL(getPlaybackData, [episodeUuid]);
@@ -27,7 +22,6 @@ router.get("/", async (req, res) => {
     });
 
     const sortedObjTotal = rankList(positions);
-   
     res.send({ status: 1, data: sortedObjTotal });
   } catch (e) {
     console.log(e);

@@ -21,6 +21,7 @@ router.post("/", checkUser, async (req, res) => {
     typeof playbackPosition === null
   ) {
     res.send({ status: 0, reason: "invalid playback position or duration" });
+    return;
   }
 
   try {

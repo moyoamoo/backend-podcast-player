@@ -41,7 +41,7 @@ router.get("/:num", checkUser, async (req, res) => {
       res.send({
         status: 1,
         data: searchTerms,
-        reason: "not enough search results",
+        reason: "not enough results",
       });
       return;
     }

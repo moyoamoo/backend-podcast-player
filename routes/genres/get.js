@@ -5,8 +5,9 @@ const { getUserGenres } = require("../../mysql/queries");
 const { rankList } = require("../../utils");
 const router = express.Router();
 
-router.get("/", checkUser, async (req, res) => {
-  const { no } = req.params;
+router.get("/:num", checkUser, async (req, res) => {
+  let { num } = req.params;
+  num = Number(num);
   try {
     const results = await connectMySQL(getUserGenres, [req.authedUserID]);
 
@@ -28,7 +29,26 @@ router.get("/", checkUser, async (req, res) => {
       //turn array into object
       const rankedGenres = rankList(genres);
 
-      res.send({ status: 1, data: rankedGenres });
+      // res.send({ status: 1, data: rankedGenres });
+
+      let newRanked = {};
+
+      //change length of object
+      if (Object.keys(rankedGenres).length >= num) {
+        for (let i = 0; i < num; i++) {
+          newRanked[Object.keys(rankedGenres)[i]] =
+            Object.values(rankedGenres)[i];
+        }
+        res.send({ status: 1, data: newRanked });
+        return;
+      } else if (Object.keys(rankedGenres).length < num - 1) {
+        res.send({
+          status: 1,
+          data: rankedGenres,
+          reason: "not enough results",
+        });
+        return;
+      }
     }
   } catch (e) {
     console.log(e);

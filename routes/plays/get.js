@@ -4,12 +4,15 @@ const { checkUser } = require("../../middleware");
 const { rankList } = require("../../utils");
 const router = express.Router();
 
-router.get("/", checkUser, async (req, res) => {
+router.get("/:num", checkUser, async (req, res) => {
+  let { num } = req.params;
+  num = Number(num);
   let uuids = [];
   let podcasts = {};
 
   async function getData(uuid) {
     try {
+      //select podcasts
       const results = await connectMySQL(
         `SELECT position, duration
           FROM playback_log
@@ -18,15 +21,37 @@ router.get("/", checkUser, async (req, res) => {
         [req.authedUserID, uuid]
       );
       // console.log(data)
+
+      //round length divided by duration
       podcasts[uuid] = (results.length / results[0].duration).toFixed(1);
 
+      //put in object when on last iteration of loop
       if (uuid === uuids[uuids.length - 1]) {
         const rankedPodcasts = Object.fromEntries(
           Object.entries(podcasts).sort(([, a], [, b]) => b - a)
         );
-        res.send({ status: 1, data: rankedPodcasts });
+        let newRanked = {};
+
+        //change length of object
+        if (Object.keys(rankedPodcasts).length >= num) {
+          for (let i = 0; i < num; i++) {
+            newRanked[Object.keys(rankedPodcasts)[i]] =
+              Object.values(rankedPodcasts)[i];
+            console.log(Object.keys(rankedPodcasts)[i]);
+          }
+          res.send({ status: 1, data: newRanked });
+          return;
+        } else if (Object.keys(rankedPodcasts).length < num - 1)  {
+          res.send({
+            status: 1,
+            data: rankedPodcasts,
+            reason: "not enough results",
+          });
+          return;
+        }
+
+        // res.send({ status: 1, data: rankedPodcasts });
       }
-      console.log(podcasts);
     } catch (error) {
       console.log(error);
     }
@@ -51,7 +76,6 @@ router.get("/", checkUser, async (req, res) => {
         uuids.push(result.podcast_uuid);
       }
     });
-    console.log(uuids);
 
     uuids.forEach((uuid) => {
       getData(uuid);

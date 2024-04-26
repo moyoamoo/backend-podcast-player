@@ -1,6 +1,5 @@
 const express = require("express");
 const connectMySQL = require("../../mysql/driver");
-const { rankList } = require("../../utils");
 const { getPlaybackData } = require("../../mysql/queries");
 
 const router = express.Router();
@@ -18,7 +17,6 @@ router.get("/", async (req, res) => {
 
     let positions = new Array(results[results.length - 1].position + 1).fill(0);
 
-
     results.forEach((result) => {
       positions[result.position] += 1;
     });
@@ -30,7 +28,7 @@ router.get("/", async (req, res) => {
 
     res.send({ status: 1, data: output });
   } catch (e) {
-    console.log(e);
+    res.send({ status: 0 });
   }
 });
 

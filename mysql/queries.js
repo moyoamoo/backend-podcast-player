@@ -56,7 +56,8 @@ const getUser = `SELECT *
 
 const getPlaybackData = `SELECT position
                           FROM playback_log
-                            WHERE episode_uuid LIKE ?;`;
+                            WHERE episode_uuid LIKE ?
+                              ORDER BY position ASC;`;
 
 const addAuthedUserListenData = `INSERT INTO playback_log
                                   (uuid, user_id, position, duration)
@@ -96,6 +97,10 @@ const addToGenres = `INSERT INTO genres
 const getUserGenres = `SELECT genre FROM genres
                           WHERE user_id like ?;`;
 
+const replaceTempId = `UPDATE INTO playback_log
+                          SET user_id LIKE ?
+                            WHERE temp_user_id LIKE ?;`;
+
 module.exports = {
   addUser,
   addToken,
@@ -118,4 +123,5 @@ module.exports = {
   addGuestUserListenData,
   addToGenres,
   getUserGenres,
+  replaceTempId
 };

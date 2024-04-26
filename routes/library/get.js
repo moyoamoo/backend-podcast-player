@@ -11,9 +11,9 @@ router.get("/", checkUser, async (req, res) => {
     results.forEach((result) => {
       library.push(result.uuid);
     });
-    res.send({ status: 1, library: library });
+    res.send({ status: 1, data: library });
   } catch (e) {
-    res.send({ status: 1, reason: "no podcasts in library" });
+    res.send({ status: 0, reason: "no podcasts in library" });
   }
 });
 

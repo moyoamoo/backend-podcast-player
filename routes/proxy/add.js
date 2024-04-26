@@ -3,10 +3,7 @@ const router = express.Router();
 const axios = require("axios");
 const { apiKey, endPoint, userID } = require("../../config");
 const connectMySQL = require("../../mysql/driver");
-const {
-  getEpisodeCache,
-  addEpisodeCache,
-} = require("../../mysql/queries");
+const { getEpisodeCache, addEpisodeCache } = require("../../mysql/queries");
 
 router.get("/", async (req, res) => {
   const { uuid, order, page } = req.headers;
@@ -51,7 +48,8 @@ router.get("/", async (req, res) => {
       }
     );
 
-    res.send(data);
+    console.log(data, "here");
+    res.send({ status: 1, data: data });
     // change to b64
     const b64 = Buffer.from(JSON.stringify(data), "utf8");
 

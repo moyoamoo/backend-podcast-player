@@ -4,16 +4,15 @@ const sha256 = require("sha256");
 const { salt } = require("../../secrets.js");
 const { getRandom } = require("../../utils.js");
 const connectMySQL = require("../../mysql/driver.js");
-const { addToken, findUser } = require("../../mysql/queries.js");
+const { addToken, findUser, replaceTempId } = require("../../mysql/queries.js");
 const { userID } = require("../../config.js");
 
 router.post("/", async (req, res) => {
-  console.log("i ran")
+  console.log("i ran");
   let { email, password } = req.body;
 
   //hash password
   password = sha256(password + salt);
-
 
   //search for user
   const results = await connectMySQL(findUser, [email, password]);
@@ -22,8 +21,13 @@ router.post("/", async (req, res) => {
   if (results.length > 0) {
     const token = getRandom();
 
+    if (req.tempUserId) {
+      await connectMySQL(replaceTempId, [req.authedUserID, req.tempUserId]);
+      res.send({ status: 1, token, replaceTempId: true });
+    }
+
     await connectMySQL(addToken, [results[0].id, token]);
-    res.send({ status: 1, token });
+    res.send({ status: 1, token, replaceTempId: false });
     return;
   }
 

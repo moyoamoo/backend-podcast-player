@@ -10,7 +10,7 @@ router.post("/", checkUser, (req, res) => {
   
 
   const formattedGenres = formatGenres(genres);
-  console.log(formattedGenres);
+  
 
   async function insertGenres(userID, genre) {
     try {

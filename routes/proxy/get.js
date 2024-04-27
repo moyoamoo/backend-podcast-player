@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
       res.send(str.toString("utf8"));
       return;
     }
-    console.log(cache);
+    
     const { data } = await axios.post(
       endPoint,
       {
@@ -54,6 +54,7 @@ router.get("/", async (req, res) => {
       }
     );
 
+
     // change to b64
     const b64 = Buffer.from(JSON.stringify(data), "utf8");
 
@@ -65,7 +66,6 @@ router.get("/", async (req, res) => {
       order,
     ]);
 
-    console.log(data, "data from api");
     res.send(data);
   } catch (e) {
     res.send(e);

@@ -48,7 +48,7 @@ router.get("/", async (req, res) => {
       }
     );
 
-    console.log(data, "here");
+    
     res.send({ status: 1, data: data });
     // change to b64
     const b64 = Buffer.from(JSON.stringify(data), "utf8");

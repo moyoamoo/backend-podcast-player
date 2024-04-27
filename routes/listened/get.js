@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   const { episode_uuid } = req.headers;
-  console.log(episode_uuid);
+  
   try {
     const results = await connectMySQL(getPlaybackData, [episode_uuid]);
     console.log(results);

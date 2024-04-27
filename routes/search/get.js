@@ -2,7 +2,7 @@ const express = require("express");
 const { checkUser } = require("../../middleware");
 const connectMySQL = require("../../mysql/driver");
 const router = express.Router();
-const { removeDuplicates } = require("../../utils");
+const { removeDuplicates, rankList } = require("../../utils");
 
 router.get("/:num", checkUser, async (req, res) => {
   let { num } = req.params;
@@ -12,9 +12,10 @@ router.get("/:num", checkUser, async (req, res) => {
   try {
     console.log(req.authedUserID);
     const results = await connectMySQL(
-      `SELECT search_term 
+      `SELECT search_term
             FROM search
-                WHERE user_id LIKE ?; `,
+                WHERE user_id LIKE ?
+                  ORDER BY entry_date DESC; `,
       [req.authedUserID]
     );
 
@@ -28,8 +29,9 @@ router.get("/:num", checkUser, async (req, res) => {
       searchTerms.push(result.search_term);
     });
 
-    searchTerms = removeDuplicates(searchTerms);
-
+    
+    searchTerms = removeDuplicates(searchTerms)
+    
     if (searchTerms.length >= num) {
       searchTerms = searchTerms.slice(0, num);
       res.send({ status: 1, data: searchTerms });

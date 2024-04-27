@@ -4,22 +4,26 @@ const sha256 = require("sha256");
 const { salt } = require("../../secrets");
 const { checkUser } = require("../../middleware");
 const connectMySQL = require("../../mysql/driver");
-const { updateUser } = require("../../mysql/queries");
+const { updatePassword, updateEmail } = require("../../mysql/queries");
 
 router.patch("/", checkUser, async (req, res) => {
   const { email, password } = req.body;
 
   if (!(email || password)) {
-    res.send({ status: 1, reason: "Missing email or password" });
+    res.send({ status: 0, reason: "Missing email or password" });
   }
+  let key;
 
   if (email) {
-    await connectMySQL(updateUser, ["email", email, req.headers.token]);
+    key = "email";
+    await connectMySQL(updateEmail, [email, req.headers.token]);
   }
   if (password) {
-    await connectMySQL(
-      updateUser("password", [sha256(password) + salt, req.headers.token])
-    );
+    await connectMySQL(updatePassword, [
+      "password",
+      sha256(password) + salt,
+      req.headers.token,
+    ]);
   }
 
   res.send({ status: 1 });

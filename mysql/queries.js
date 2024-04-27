@@ -32,10 +32,15 @@ const deleteUser = `DELETE users, sessions FROM users
                       JOIN sessions ON users.id = sessions.user_id
                         WHERE token LIKE ?;`;
 
-const updateUser = `UPDATE users
+const updateEmail = `UPDATE users
                       JOIN sessions ON users.id = sessions.user_id
-                        SET ? = ?
+                        SET email = ?
                           WHERE sessions.token LIKE ?;`;
+
+const updatePassword = `UPDATE users
+JOIN sessions ON users.id = sessions.user_id
+  SET password = ?
+    WHERE sessions.token LIKE ?;`;
 
 const checkToken = `SELECT users.id
                       FROM users
@@ -106,7 +111,8 @@ module.exports = {
   addToken,
   deleteToken,
   deleteUser,
-  updateUser,
+  updateEmail,
+  updatePassword,
   checkToken,
   getUser,
   addToLibrary,
@@ -123,5 +129,5 @@ module.exports = {
   addGuestUserListenData,
   addToGenres,
   getUserGenres,
-  replaceTempId
+  replaceTempId,
 };

@@ -29,9 +29,8 @@ router.get("/:num", checkUser, async (req, res) => {
       searchTerms.push(result.search_term);
     });
 
-    
-    searchTerms = removeDuplicates(searchTerms)
-    
+    searchTerms = removeDuplicates(searchTerms);
+
     if (searchTerms.length >= num) {
       searchTerms = searchTerms.slice(0, num);
       res.send({ status: 1, data: searchTerms });

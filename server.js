@@ -9,6 +9,12 @@ app.use(express.json());
 
 app.use(cors());
 
+//get charts by country
+app.use("/top_charts/country", require("./routes/chartsProxy/get"));
+
+//georeverse
+app.use("/reverse_geocoding", require("./routes/locationProxy/get"));
+
 //search podcast
 app.use("/search", require("./routes/proxy/get"));
 //add episodes

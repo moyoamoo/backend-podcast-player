@@ -38,9 +38,9 @@ const updateEmail = `UPDATE users
                           WHERE sessions.token LIKE ?;`;
 
 const updatePassword = `UPDATE users
-JOIN sessions ON users.id = sessions.user_id
-  SET password = ?
-    WHERE sessions.token LIKE ?;`;
+                          JOIN sessions ON users.id = sessions.user_id
+                           SET password = ?
+                            WHERE sessions.token LIKE ?;`;
 
 const checkToken = `SELECT users.id
                       FROM users

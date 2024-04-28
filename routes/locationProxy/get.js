@@ -5,7 +5,7 @@ const { geoApiKey } = require("../../config");
 
 router.get("/", async (req, res) => {
   const { lat, lon } = req.headers;
-  console.log(lat, lon);
+ 
   try {
     const { data } = await axios.get(
       `https://geocode.maps.co/reverse?lat=${lat}&lon=${lon}&api_key=${geoApiKey}`

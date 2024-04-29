@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
+const { apiKey, endPoint, userID } = require("../../config");
 const connectMySQL = require("../../mysql/driver");
 
-const { apiKey, endPoint, userID } = require("../../config");
-
 router.get("/", async (req, res) => {
-  const { country } = req.headers;
+  console.log("i ran");
+  let country = "UNITED_STATES_OF_AMERICA";
   try {
     const cache = await connectMySQL(
       `SELECT chart FROM charts_country_cache
@@ -21,12 +21,11 @@ router.get("/", async (req, res) => {
       res.send(str.toString("utf8"));
       return;
     }
-
     const { data } = await axios.post(
       endPoint,
       {
         query: `{
-            getTopChartsByCountry(taddyType:PODCASTSERIES, country:UNITED_KINGDOM){
+            getTopChartsByCountry(taddyType:PODCASTSERIES, country:UNITED_STATES_OF_AMERICA){
               topChartsId
               podcastSeries{
                 uuid
@@ -44,7 +43,6 @@ router.get("/", async (req, res) => {
         },
       }
     );
-
     let position = 1;
     data.data.getTopChartsByCountry.podcastSeries.forEach((podcast) => {
       podcast.position = position++;

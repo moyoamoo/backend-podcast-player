@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
     }
 
     await connectMySQL(addToken, [results[0].id, token]);
-    res.send({ status: 1, token, replaceTempId: false });
+    res.send({ status: 1, token, replaceTempId: false, email: results[0].email});
     return;
   }
 

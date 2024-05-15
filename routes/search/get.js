@@ -7,10 +7,8 @@ const { removeDuplicates, rankList } = require("../../utils");
 router.get("/:num", checkUser, async (req, res) => {
   let { num } = req.params;
   num = Number(num);
-  console.log(num);
 
   try {
-    console.log(req.authedUserID);
     const results = await connectMySQL(
       `SELECT search_term
             FROM search

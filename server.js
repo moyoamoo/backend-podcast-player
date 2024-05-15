@@ -1,6 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
+
+console.log(process.env);
 
 // app.use(express.static("public"));
 
@@ -8,6 +11,8 @@ const cors = require("cors");
 app.use(express.json());
 
 app.use(cors());
+
+app.use("/update_email", require("./routes/user/accept"));
 
 //get charts by country
 app.use("/top_charts/country", require("./routes/chartsProxy/get"));

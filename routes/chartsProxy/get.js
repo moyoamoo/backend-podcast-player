@@ -5,7 +5,6 @@ const { apiKey, endPoint, userID } = require("../../config");
 const connectMySQL = require("../../mysql/driver");
 
 router.get("/", async (req, res) => {
-  console.log("i ran");
   let country = "UNITED_STATES_OF_AMERICA";
   try {
     const cache = await connectMySQL(
@@ -14,7 +13,6 @@ router.get("/", async (req, res) => {
       [country]
     );
 
-    console.log(cache);
 
     if (cache.length) {
       const str = Buffer.from(cache[0].chart, "base64");
@@ -25,16 +23,24 @@ router.get("/", async (req, res) => {
       endPoint,
       {
         query: `{
-            getTopChartsByCountry(taddyType:PODCASTSERIES, country:UNITED_STATES_OF_AMERICA){
-              topChartsId
+          getTopChartsByCountry(taddyType:PODCASTSERIES, country:UNITED_STATES_OF_AMERICA){
+            topChartsId
+            podcastSeries{
+              uuid
+              name
+              imageUrl
+              description
+            }
+            podcastEpisodes{
+              uuid
+              name
               podcastSeries{
                 uuid
                 name
-                description
-                imageUrl
               }
             }
-          }`,
+          }
+        }`,
       },
       {
         headers: {

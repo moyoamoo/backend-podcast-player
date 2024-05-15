@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/", checkUser, async (req, res) => {
   const { searchterm: searchTerm } = req.headers;
-  console.log(searchTerm);
+
 
   if (!searchTerm) {
     res.send({ status: 0, reason: "no search term" });

@@ -34,7 +34,7 @@ const deleteUser = `DELETE users, sessions FROM users
 
 const updateEmail = `UPDATE users
                       JOIN sessions ON users.id = sessions.user_id
-                        SET email = ?
+                        SET new_email = ?
                           WHERE sessions.token LIKE ?;`;
 
 const updatePassword = `UPDATE users

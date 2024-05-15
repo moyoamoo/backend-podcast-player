@@ -20,7 +20,7 @@ router.get("/:num", checkUser, async (req, res) => {
               AND podcast_uuid LIKE ?`,
         [req.authedUserID, uuid]
       );
-      // console.log(data)
+     
 
       //round length divided by duration
       podcasts[uuid] = (results.length / results[0].duration).toFixed(1);
@@ -37,7 +37,7 @@ router.get("/:num", checkUser, async (req, res) => {
           for (let i = 0; i < num; i++) {
             newRanked[Object.keys(rankedPodcasts)[i]] =
               Object.values(rankedPodcasts)[i];
-            console.log(Object.keys(rankedPodcasts)[i]);
+         
           }
           res.send({ status: 1, data: newRanked });
           return;

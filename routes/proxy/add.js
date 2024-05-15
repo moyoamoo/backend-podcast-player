@@ -11,8 +11,7 @@ router.get("/", async (req, res) => {
   try {
     const cache = await connectMySQL(getEpisodeCache, [uuid, page, order]);
 
-    console.log(cache);
-
+  
     if (cache.length) {
       const str = Buffer.from(cache[0].response, "base64");
       res.send(str.toString("utf8"));

@@ -50,6 +50,16 @@ app.use("/user/add", require("./routes/user/add"));
 app.use("/user/delete", require("./routes/user/delete"));
 app.use("/user/update", require("./routes/user/update"));
 
+//clear cache
+app.use(
+  "episodes/cache/delete",
+  require("./routes/clearCache/deleteEpisodeCache")
+);
+app.use(
+  "search_term/cache/delete",
+  require("./routes/clearCache/deleteSearchCache")
+);
+
 const PORT = process.env.PORT || 6001;
 app.listen(PORT, () => {
   console.log(`Server running on PORT ${PORT}`);

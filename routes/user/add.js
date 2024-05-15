@@ -5,6 +5,8 @@ const { salt } = require("../../secrets");
 const { getRandom } = require("../../utils");
 const connectMySQL = require("../../mysql/driver");
 const { addUser, addToken } = require("../../mysql/queries");
+const { sendEmail } = require("../email/nodemailer");
+const { welcomeEmail } = require("../email/templates");
 
 router.post("/", async (req, res) => {
   let { email, password } = req.body;
@@ -22,10 +24,11 @@ router.post("/", async (req, res) => {
   try {
     const result = await connectMySQL(addUser, [email, password]);
     await connectMySQL(addToken, [result.insertId, token]);
-
-    res.send({ status: 1, token, email});
+    sendEmail(welcomeEmail(email), undefined, [{ email }]);
+    res.send({ status: 1, token, email });
   } catch (e) {
     res.send({ status: 1, reason: "Duplicate user" });
+    console.log(e);
   }
 });
 

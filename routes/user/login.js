@@ -8,7 +8,7 @@ const { addToken, findUser, replaceTempId } = require("../../mysql/queries.js");
 const { userID } = require("../../config.js");
 
 router.post("/", async (req, res) => {
-  console.log("i ran");
+  // console.log("i ran");
   let { email, password } = req.body;
 
   //hash password

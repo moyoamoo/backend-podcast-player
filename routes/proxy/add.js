@@ -11,7 +11,6 @@ router.get("/", async (req, res) => {
   try {
     const cache = await connectMySQL(getEpisodeCache, [uuid, page, order]);
 
-  
     if (cache.length) {
       const str = Buffer.from(cache[0].response, "base64");
       res.send(str.toString("utf8"));
@@ -47,7 +46,6 @@ router.get("/", async (req, res) => {
       }
     );
 
-    
     res.send({ status: 1, data: data });
     // change to b64
     const b64 = Buffer.from(JSON.stringify(data), "utf8");

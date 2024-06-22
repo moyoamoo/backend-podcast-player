@@ -2,10 +2,14 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const helmet = require("helmet");
+
+//add rate limiter
 
 // console.log(process.env);
 
 // app.use(express.static("public"));
+app.use(helmet());
 
 //manage headers
 app.use(express.json());

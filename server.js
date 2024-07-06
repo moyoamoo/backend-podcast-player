@@ -3,18 +3,24 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const helmet = require("helmet");
-
-//add rate limiter
-
-// console.log(process.env);
-
-// app.use(express.static("public"));
-app.use(helmet());
+const exec = require("child_process").exec;
 
 //manage headers
+app.use(cors());
+
 app.use(express.json());
 
-app.use(cors());
+app.use(helmet());
+
+app.post("/", (req, res) => {
+  console.log("New request", req.body);
+
+  exec("git pull", (e, std, steE) => {
+    console.log(e, std, steE);
+  });
+});
+
+//add rate limiter
 
 app.use("/update_email", require("./routes/user/accept"));
 

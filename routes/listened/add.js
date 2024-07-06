@@ -7,12 +7,6 @@ router.post("/", checkUser, async (req, res) => {
   let { episodeUuid, podcastUuid, playbackPosition, playbackDuration } =
     req.body;
 
-  // if (!uuid || typeof uuid != "string" || uuid.length != 36) {
-  //   res.send({ status: 0, reason: "invalid uuid" });
-  //   return;
-  // }
-  
-
   if (
     !playbackDuration ||
     !playbackPosition ||
@@ -56,7 +50,7 @@ router.post("/", checkUser, async (req, res) => {
     }
     res.send({ status: 1 });
   } catch (e) {
-    console.log(e);
+    console.log({ status: 0, reason: "data not found" });
   }
 });
 

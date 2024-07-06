@@ -18,10 +18,10 @@ router.get("/", async (req, res) => {
     // if in cache send
     if (cache.length) {
       const str = Buffer.from(cache[0].response, "base64");
-      res.send(str.toString("utf8"));
+      res.send({ status: 1, data: str.toString("utf8") });
       return;
     }
-    
+
     const { data } = await axios.post(
       endPoint,
       {
@@ -54,7 +54,6 @@ router.get("/", async (req, res) => {
       }
     );
 
-
     // change to b64
     const b64 = Buffer.from(JSON.stringify(data), "utf8");
 
@@ -66,9 +65,9 @@ router.get("/", async (req, res) => {
       order,
     ]);
 
-    res.send(data);
+    res.send({ reason: 1, data });
   } catch (e) {
-    res.send(e);
+    res.send({ status: 0, reason: "data not found" });
   }
 });
 

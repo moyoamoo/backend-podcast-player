@@ -1,19 +1,24 @@
 const express = require("express");
+require("dotenv").config();
 const router = express.Router();
 const axios = require("axios");
 const { apiKey, endPoint, userID } = require("../../config");
 const connectMySQL = require("../../mysql/driver");
-const { getEpisodeCache, addEpisodeCache } = require("../../mysql/queries");
+const {
+  getEpisodeCache,
+  addEpisodeCache,
+} = require("../../mysql/cacheQueries");
 
 router.get("/", async (req, res) => {
   const { uuid, order, page } = req.headers;
+  console.log(typeof page);
 
   try {
     const cache = await connectMySQL(getEpisodeCache, [uuid, page, order]);
 
     if (cache.length) {
       const str = Buffer.from(cache[0].response, "base64");
-      res.send(str.toString("utf8"));
+      res.send(JSON.parse(str.toString("utf8")));
       return;
     }
 
@@ -40,14 +45,14 @@ router.get("/", async (req, res) => {
       },
       {
         headers: {
-          "X-USER-ID": userID,
-          "X-API-Key": apiKey,
+          "X-USER-ID": process.env.USER_ID,
+          "X-API-KEY": process.env.API_KEY,
         },
       }
     );
-
-    res.send({ status: 1, data: data });
-    // change to b64
+    
+    res.send({ status: 1, data: data});
+    // // change to b64
     const b64 = Buffer.from(JSON.stringify(data), "utf8");
 
     // send to cache table
@@ -58,7 +63,8 @@ router.get("/", async (req, res) => {
       order,
     ]);
   } catch (e) {
-    res.send(e);
+    console.log(e);
+    res.send({ status: 0, reason: "no data found" });
   }
 });
 

@@ -1,5 +1,5 @@
 const connectMySQL = require("./mysql/driver");
-const { checkToken } = require("./mysql/queries");
+const { checkToken } = require("./mysql/userQueries");
 
 async function checkUser(req, res, next) {
   if (req.headers.unique) {

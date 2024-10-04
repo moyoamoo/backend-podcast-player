@@ -4,7 +4,7 @@ const sha256 = require("sha256");
 const { salt } = require("../../secrets.js");
 const { getRandom } = require("../../utils.js");
 const connectMySQL = require("../../mysql/driver.js");
-const { addToken, findUser, replaceTempId } = require("../../mysql/queries.js");
+const { addToken, findUser, replaceTempId } = require("../../mysql/userQueries");
 const { userID } = require("../../config.js");
 
 router.post("/", async (req, res) => {

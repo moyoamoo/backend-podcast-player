@@ -1,6 +1,5 @@
 const express = require("express");
-const router = express.Router();
-
+const router = express.Router()
 const connectMySQL = require("../../mysql/driver");
 
 router.delete("/", async (res, req) => {

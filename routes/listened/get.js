@@ -1,12 +1,12 @@
 const express = require("express");
 const connectMySQL = require("../../mysql/driver");
-const { getPlaybackData } = require("../../mysql/queries");
+const { getPlaybackData } = require("../../mysql/playbackQueries");
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   const { episode_uuid } = req.headers;
-  
+
   try {
     const results = await connectMySQL(getPlaybackData, [episode_uuid]);
     console.log(results);
@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
     positions.forEach((item, index) => {
       output[index] = item;
     });
-
+    console.log(output);
     res.send({ status: 1, data: output });
   } catch (e) {
     res.send({ status: 0 });

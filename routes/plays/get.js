@@ -1,7 +1,6 @@
 const express = require("express");
 const connectMySQL = require("../../mysql/driver");
 const { checkUser } = require("../../middleware");
-const { rankList } = require("../../utils");
 const router = express.Router();
 
 router.get("/:num", checkUser, async (req, res) => {
@@ -21,7 +20,6 @@ router.get("/:num", checkUser, async (req, res) => {
         [req.authedUserID, uuid]
       );
      
-
       //round length divided by duration
       podcasts[uuid] = (results.length / results[0].duration).toFixed(1);
 
@@ -50,10 +48,9 @@ router.get("/:num", checkUser, async (req, res) => {
           return;
         }
 
-        // res.send({ status: 1, data: rankedPodcasts });
       }
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -70,7 +67,6 @@ router.get("/:num", checkUser, async (req, res) => {
       return;
     }
 
-    // console.log(results)
     results.forEach((result) => {
       if (!uuids.includes(result.podcast_uuid)) {
         uuids.push(result.podcast_uuid);

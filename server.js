@@ -1,9 +1,9 @@
 // require("dotenv").config();
 const express = require("express");
+require("dotenv").config();
 const app = express();
 const cors = require("cors");
 const helmet = require("helmet");
-const exec = require("child_process").exec;
 
 //manage headers
 app.use(cors());
@@ -12,25 +12,20 @@ app.use(express.json());
 
 app.use(helmet());
 
-app.post("/", (req, res) => {
-  console.log("New request", req.body);
-
-  exec("git pull", (e, std, steE) => {
-    console.log(e, std, steE);
-  });
-});
-
 //add rate limiter
 
 app.use("/update_email", require("./routes/user/accept"));
-
-//get charts by country
-app.use("/top_charts/country", require("./routes/chartsProxy/get"));
 
 //search podcast
 app.use("/search", require("./routes/proxy/get"));
 //add episodes
 app.use("/episodes", require("./routes/proxy/add"));
+
+//country charts by country
+app.use("/topcharts/country/get", require("./routes/proxy/charts"));
+
+//country charts genres
+app.use("/topcharts/genres/get", require("./routes/proxy/genres"));
 
 //get listened for user
 app.use("/plays/get", require("./routes/plays/get"));

@@ -1,16 +1,14 @@
 const express = require("express");
 const { checkUser } = require("../../middleware");
 const connectMySQL = require("../../mysql/driver");
-const { addToGenres } = require("../../mysql/queries");
+const { addToGenres } = require("../../mysql/genreQueries");
 const { formatGenres } = require("../../utils");
 const router = express.Router();
 
 router.post("/", checkUser, (req, res) => {
   let { genres } = req.body;
-  
 
   const formattedGenres = formatGenres(genres);
-  
 
   async function insertGenres(userID, genre) {
     try {
@@ -18,6 +16,7 @@ router.post("/", checkUser, (req, res) => {
       res.send({ status: 1 });
     } catch (e) {
       console.log(e);
+      res.send({ status: 0 });
     }
   }
 

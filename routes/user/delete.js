@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { checkUser } = require("../../middleware");
 const connectMySQL = require("../../mysql/driver");
-const { deleteUser } = require("../../mysql/queries");
+const { deleteUser } = require("../../mysql/userQueries");
 const { deleteAccount } = require("../email/templates");
 const { sendEmail } = require("../email/nodemailer");
 

@@ -3,19 +3,14 @@ const { checkUser } = require("../../middleware");
 const connectMySQL = require("../../mysql/driver");
 const router = express.Router();
 const { removeDuplicates, rankList } = require("../../utils");
+const { getSearchTerms } = require("../../mysql/searchQueries");
 
 router.get("/:num", checkUser, async (req, res) => {
   let { num } = req.params;
   num = Number(num);
 
   try {
-    const results = await connectMySQL(
-      `SELECT search_term
-            FROM search
-                WHERE user_id LIKE ?
-                  ORDER BY entry_date DESC; `,
-      [req.authedUserID]
-    );
+    const results = await connectMySQL(getSearchTerms[req.authedUserID]);
 
     if (!results.length) {
       res.send({ status: 1, reason: "no search results" });

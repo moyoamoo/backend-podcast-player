@@ -1,9 +1,10 @@
 const express = require("express");
+require("dotenv").config()
 const router = express.Router();
 const axios = require("axios");
 const connectMySQL = require("../../mysql/driver");
 const { apiKey, endPoint, userID } = require("../../config");
-const { getSearchCache, addSearchCache } = require("../../mysql/queries");
+const { getSearchCache, addSearchCache } = require("../../mysql/cacheQueries");
 
 router.get("/", async (req, res) => {
   let { searchterm, page, order } = req.headers;
@@ -15,10 +16,11 @@ router.get("/", async (req, res) => {
     // search for term in cache
     const cache = await connectMySQL(getSearchCache, [searchterm, page, order]);
 
-    // if in cache send
+    // if in cache send, conver to string and then JSON
     if (cache.length) {
       const str = Buffer.from(cache[0].response, "base64");
-      res.send({ status: 1, data: str.toString("utf8") });
+      const data = JSON.parse(str.toString("utf8"));
+      res.send({ status: 1, data: data.data });
       return;
     }
 
@@ -48,8 +50,8 @@ router.get("/", async (req, res) => {
       },
       {
         headers: {
-          "X-USER-ID": userID,
-          "X-API-Key": apiKey,
+          "X-USER-ID": process.env.USER_ID,
+          "X-API-KEY": process.env.API_KEY,
         },
       }
     );

@@ -1,7 +1,7 @@
 const express = require("express");
 const { checkUser } = require("../../middleware");
 const connectMySQL = require("../../mysql/driver");
-const { addToLibrary } = require("../../mysql/queries");
+const { addToLibrary } = require("../../mysql/libraryQueries");
 const router = express.Router();
 
 router.post("/", checkUser, async (req, res) => {

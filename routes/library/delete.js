@@ -1,6 +1,6 @@
 const express = require("express");
 const { checkUser } = require("../../middleware");
-const { deleteFromLibrary } = require("../../mysql/queries");
+const { deleteFromLibrary } = require("../../mysql/libraryQueries");
 const connectMySQL = require("../../mysql/driver");
 const router = express.Router();
 

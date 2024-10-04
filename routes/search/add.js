@@ -1,10 +1,12 @@
 const express = require("express");
 const { checkUser } = require("../../middleware");
 const connectMySQL = require("../../mysql/driver");
+const { addSearchTerm } = require("../../mysql/searchQueries");
 const router = express.Router();
 
 router.get("/", checkUser, async (req, res) => {
   const { searchterm: searchTerm } = req.headers;
+  console.log(searchTerm, req.authedUserID);
 
   if (!searchTerm) {
     res.send({ status: 0, reason: "no search term" });
@@ -13,9 +15,8 @@ router.get("/", checkUser, async (req, res) => {
 
   try {
     await connectMySQL(
-      `INSERT INTO search
-                        (user_id, search_term)
-                             VALUES (?, ?)`[(req.authedUserID, searchTerm)]
+      addSearchTerm,
+      [req.authedUserID, searchTerm]
     );
     res.send({ status: 1 });
   } catch (e) {

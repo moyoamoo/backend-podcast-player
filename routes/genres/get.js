@@ -1,7 +1,7 @@
 const express = require("express");
 const { checkUser } = require("../../middleware");
 const connectMySQL = require("../../mysql/driver");
-const { getUserGenres } = require("../../mysql/queries");
+const { getUserGenres } = require("../../mysql/genreQueries");
 const { rankList } = require("../../utils");
 const router = express.Router();
 

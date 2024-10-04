@@ -4,7 +4,7 @@ const sha256 = require("sha256");
 const { salt } = require("../../secrets");
 const { checkUser } = require("../../middleware");
 const connectMySQL = require("../../mysql/driver");
-const { updatePassword, updateEmail } = require("../../mysql/queries");
+const { updatePassword, updateEmail } = require("../../mysql/userQueries");
 
 router.patch("/", checkUser, async (req, res) => {
   const { email, password } = req.body;

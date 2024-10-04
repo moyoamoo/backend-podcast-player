@@ -4,7 +4,7 @@ const sha256 = require("sha256");
 const { salt } = require("../../secrets");
 const { getRandom } = require("../../utils");
 const connectMySQL = require("../../mysql/driver");
-const { addUser, addToken } = require("../../mysql/queries");
+const { addUser, addToken } = require("../../mysql/userQueries");
 const { sendEmail } = require("../email/nodemailer");
 const { welcomeEmail } = require("../email/templates");
 

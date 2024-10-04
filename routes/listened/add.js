@@ -1,5 +1,5 @@
 const express = require("express");
-const { checkToken, checkUser } = require("../../middleware");
+const { checkUser } = require("../../middleware");
 const connectMySQL = require("../../mysql/driver");
 const router = express.Router();
 

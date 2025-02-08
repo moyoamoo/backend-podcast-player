@@ -10,5 +10,5 @@ This is the backend for the final project made during The Jump Software Developm
 
 **Client:** React, Redux, Typescript, Chart.js, SCSS
 
-**Server:** Node, Express, SQL, MyQL
+**Server:** Node, Express, SQL, MySQL
 
